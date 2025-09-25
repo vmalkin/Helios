@@ -7,5 +7,6 @@ Refactor of the gigantic mess that is the Helios GOES image monitoring software!
     - Account for satellite rotation that shifts the suns position from it's assumed "centre" of the image.
 - Download the process the SUVI GOES images in 3 wavelengths.
   - Create false colour image emphasising coronal holes.
-    - to be used for SOlar Wind forecasting.
+    - To be used for solar wind forecasting.
   - Create false colour difference images to emphasise Earth-facing CME.
+- Create solar wind guestimate based on SW data
