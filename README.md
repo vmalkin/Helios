@@ -10,3 +10,5 @@ Refactor of the gigantic mess that is the Helios GOES image monitoring software!
     - To be used for solar wind forecasting.
   - Create false colour difference images to emphasise Earth-facing CME.
 - Create solar wind guestimate based on SW data
+
+This repo is a project for Dunedin Aurora, and is subject to the following [licence](http://dunedinaurora.nz/licence.html)
