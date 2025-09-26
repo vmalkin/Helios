@@ -5,6 +5,9 @@ import os
 import global_config
 import standard_stuff
 
+def ring_system_bell():
+    # rings the terminal bell.
+    print("\a")
 
 def get_resource_from_url(url_to_get):
     response = ""
@@ -17,6 +20,8 @@ def get_resource_from_url(url_to_get):
     return response
 
 def parseimages(listofimages, imagestore):
+    # Identifies if any images in the listofimages currently exist. If so they are removed from the list
+    # and the revised list is returned.
     set_downloads = set(listofimages)
     stored = os.listdir(imagestore)
     set_stored = set(stored)
@@ -35,7 +40,6 @@ def downloadimages(listofimages, storagelocation):
                 response1 = get_resource_from_url(img1url)
                 print("Saving file ", file)
                 with open(file, 'wb') as f:
-                    # f.write(response1.read())
                     f.write(response1.content)
                 f.close()
         else:
@@ -47,10 +51,8 @@ def get_imagelist(url_to_get):
     r = r.text.split("\n")
     #  The response is now delimited on newlines. We can get rid lines to only have the HTML with the images
     # Remove the content above and below the table that contains images
-
     r = r[13:]
     r = r[:-4]
-
     # Now split the lines around image file names. Return only the ones 512 in size
     returnlist = []
     for line in r:
@@ -62,7 +64,6 @@ def get_imagelist(url_to_get):
             # if re.search("c3_1024", filename):
             if re.search("c3_512", filename):
                 returnlist.append(filename)
-
     return returnlist
 
 def download_lasco(lasco_url, storage_folder):
@@ -70,8 +71,7 @@ def download_lasco(lasco_url, storage_folder):
     listofimages = get_imagelist(lasco_url)
     newimages = parseimages(listofimages, storage_folder)
     if len(newimages) > 0:
-        # rings the terminal bell
-        print("\a")
+        ring_system_bell()
         downloadimages(newimages, storage_folder)
 
 
@@ -84,22 +84,13 @@ if __name__ == "__main__":
 
     tm = int(time.time())
     ymd_now = int(standard_stuff.posix2utc(tm, "%Y%m%d"))
-    ymd_old1 = ymd_now - 1
-    ymd_old2 = ymd_old1 - 1
+    ymd_old = ymd_now - 3
     year = standard_stuff.posix2utc(tm, "%Y")
 
-    for i in range(ymd_now, ymd_now - 3)
-    # LASCO coronagraph
-    baseURL = "https://soho.nascom.nasa.gov/data/REPROCESSING/Completed/" + year + "/c3/" + str(ymd_now) + "/"
-    download_lasco(baseURL, storage_folder)
-
-    # Parse for old epoch files that have been added
-    baseURL = "https://soho.nascom.nasa.gov/data/REPROCESSING/Completed/" + year + "/c3/" + str(ymd_old1) + "/"
-    download_lasco(baseURL, storage_folder)
-
-    # Parse for old epoch files that have been added
-    baseURL = "https://soho.nascom.nasa.gov/data/REPROCESSING/Completed/" + year + "/c3/" + str(ymd_old2) + "/"
-    download_lasco(baseURL, storage_folder)
+    for epoch in range(ymd_now, ymd_old, - 1):
+        # LASCO coronagraph
+        baseURL = "https://soho.nascom.nasa.gov/data/REPROCESSING/Completed/" + year + "/c3/" + str(epoch) + "/"
+        download_lasco(baseURL, storage_folder)
 
     # #####################################################################################################
     # Processing and analysis of LASCO images happens here
@@ -111,6 +102,19 @@ if __name__ == "__main__":
         os.makedirs(enhanced_folder)
     if not os.path.exists(analysis_folder):
         os.makedirs(analysis_folder)
+    # BEGIN enhancesment of LASCO images, removing particle strikes and improve contrast.
+    # Generate file list of current lasco images for the past 24 hours or other time interval
+
+    # Remove particle hits by taking the rolling median of 3 images, provided there is no time interval between any
+    # image greater than some empirically determined value. CReate a new image from this.
+
+    # If everything works out, apply image contrast/emhancement
+
+    # At this point we can apply the local analyser to automatically calculate if a possible CME has been detected
+    # This creates a new set of images that have been convoluted and saved in the analysis folder.
+
+    # Add Dunedin Aurora stamp to image.
+    # Save image - FINISHED
 
     # #####################################################################################################
     # End of LASCO download and analysis
