@@ -1,5 +1,5 @@
 # Helios
-Refactor of the gigantic mess that is the Helios GOES image monitoring software!
+Refactor of the gigantic mess that is the Helios GOES image monitoring software! Mostly, this repo is a bucket of older GOES image processing applications. There's a lot of code thats in include files as functionality was added, so I want to shrink some of this down. 
 
 - Download and process the LASCO Coronagraph images.
   - Remove Speckle from particle hits.
