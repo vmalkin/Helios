@@ -12,6 +12,28 @@ def ring_system_bell():
     # rings the terminal bell.
     print("\a")
 
+def add_stamp(image_object, utctime):
+    cv2. rectangle(image_object, (0, 449), (511, 511), (255, 255, 255), -1)
+    cv2.rectangle(image_object, (0, 0), (511, 20), (255, 255, 255), -1)
+    colour = (0, 0, 0)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_size = 0.5
+    font_color = colour
+    font_thickness = 1
+    banner = "Processed at " + global_config.copyright
+    x, y = 5, 15
+    cv2.putText(image_object, banner, (x, y), font, font_size, font_color, font_thickness, cv2.LINE_AA)
+    banner = 'LASCO coronagraph. Updated ' + utctime + " UTC."
+    x, y = 5, 466
+    cv2.putText(image_object, banner, (x, y), font, font_size, font_color, font_thickness, cv2.LINE_AA)
+
+    banner = 'Courtesy of SOHO/LASCO consortium. SOHO is a project of'
+    x, y = 5, 492
+    cv2.putText(image_object, banner, (x, y), font, font_size, font_color, font_thickness, cv2.LINE_AA)
+    banner = 'international cooperation between ESA and NASA'
+    x, y = 5, 508
+    cv2.putText(image_object, banner, (x, y), font, font_size, font_color, font_thickness, cv2.LINE_AA)
+
 def get_resource_from_url(url_to_get):
     response = ""
     try:
@@ -128,6 +150,7 @@ if __name__ == "__main__":
     time_threshold = 60 * 120
     # The cleaned mage array stores [posixtimestamp, processed_image_binary]
     cleaned_picture_array = []
+    filepath = storage_folder +  os.sep
     if len(current_files) > 3:
         for i in range(1, len(current_files) - 1):
             temp_images = [current_files[i - 1], current_files[i], current_files[i + 1]]
@@ -136,9 +159,9 @@ if __name__ == "__main__":
             tmp_images = a[:, 1]
             if max(tmp_times) - min(tmp_times) <= time_threshold:
                 # load images and create new image based on median values
-                img_1 = cv2.imread(tmp_images[0], 0)
-                img_2 = cv2.imread(tmp_images[1], 0)
-                img_3 = cv2.imread(tmp_images[2], 0)
+                img_1 = cv2.imread(filepath + tmp_images[0], 0)
+                img_2 = cv2.imread(filepath + tmp_images[1], 0)
+                img_3 = cv2.imread(filepath + tmp_images[2], 0)
                 t = [img_1, img_2, img_3]
                 median_filtered_image = np.median(t, axis=0)
                 psx_timestamp = tmp_times[1]
@@ -168,7 +191,12 @@ if __name__ == "__main__":
     # Add Dunedin Aurora stamp to images in array
     # Write out images to files. FINISHED!
     for item in processed_images:
-        pass
+        psx_timestamp = item[0]
+        img_data = item[1]
+        filename = standard_stuff.posix2utc(psx_timestamp, '%Y%m%d_%H%M')
+        savefile = enhanced_folder + os.sep + str(filename) + ".png"
+        add_stamp(img_data, utctime=filename)
+        cv2.imwrite(savefile, img_data)
 
     # #####################################################################################################
     # End of LASCO download and analysis
