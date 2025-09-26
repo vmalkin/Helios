@@ -134,6 +134,7 @@ if __name__ == "__main__":
     # So, generate file list of current lasco images for the past 24 hours or other time.
     file_list = os.listdir(storage_folder)
     file_list.sort()
+
     # The array item in list of current files has the format [posixtimestamp, filename]
     current_files = []
     for f in file_list:
