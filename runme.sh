@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 #while [ true ]; do
-#  python3 download_lasco.py
-#  python3 process_lasco.py
-python3 lasco.py
+  python3 lasco.py
 
 #  venv/bin/python download_suvi.py
 #  venv/bin/python process_suvi_diffs.py
@@ -12,7 +10,7 @@ python3 lasco.py
 #
 #  venv/bin/python process_movies.py
 #
-#  venv/bin/python chs_main.py
+  python3 chs_main.py
   
 #  echo 'PAUSING for 1 hour...'
 #  sleep 1h

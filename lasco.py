@@ -1,6 +1,5 @@
 import time
 import re
-
 import numpy as np
 import requests
 import os
@@ -145,18 +144,21 @@ if __name__ == "__main__":
         if file_posix_time >= processing_start_date:
             dp = [file_posix_time, f]
             current_files.append(dp)
+
     # Remove particle hits by taking the rolling median of 3 images, provided there is no time interval between any
     # image greater than some empirically determined value. Create an array of new images from this.
     time_threshold = 60 * 120
-    # The cleaned mage array stores [posixtimestamp, processed_image_binary]
+    # The cleaned image array stores [posixtimestamp, processed_image_binary]
     cleaned_picture_array = []
     filepath = storage_folder +  os.sep
+
     if len(current_files) > 3:
         for i in range(1, len(current_files) - 1):
             temp_images = [current_files[i - 1], current_files[i], current_files[i + 1]]
             a = np.array(temp_images, dtype=object)
             tmp_times = a[:, 0]
             tmp_images = a[:, 1]
+
             if max(tmp_times) - min(tmp_times) <= time_threshold:
                 # load images and create new image based on median values
                 img_1 = cv2.imread(filepath + tmp_images[0], 0)
@@ -202,7 +204,7 @@ if __name__ == "__main__":
     # End of LASCO download and analysis
     # #####################################################################################################
 
-    # FINAL HOUSEKEEPING - prune the size of the LASCO storage folder to some sane value. Perhaps the last 7 or 14 days?
+    # FINAL HOUSEKEEPING - prune the size of the LASCO storage folder to some sane value. Perhaps the last 7 days?
 
     computation_end = time.time()
     elapsed_mins = round((computation_end - computation_start) / 60, 1)
