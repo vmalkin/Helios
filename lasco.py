@@ -88,6 +88,7 @@ if __name__ == "__main__":
     ymd_old2 = ymd_old1 - 1
     year = standard_stuff.posix2utc(tm, "%Y")
 
+    for i in range(ymd_now, ymd_now - 3)
     # LASCO coronagraph
     baseURL = "https://soho.nascom.nasa.gov/data/REPROCESSING/Completed/" + year + "/c3/" + str(ymd_now) + "/"
     download_lasco(baseURL, storage_folder)
@@ -103,10 +104,16 @@ if __name__ == "__main__":
     # #####################################################################################################
     # Processing and analysis of LASCO images happens here
     # #####################################################################################################
-
+    enhanced_folder = global_config.folder_source_images + os.sep + "enhanced_lasco"
+    analysis_folder = global_config.folder_source_images + os.sep + "analysis_lasco"
+    processing_start_date = int(time.time() - (86400 * 1))
+    if not os.path.exists(enhanced_folder):
+        os.makedirs(enhanced_folder)
+    if not os.path.exists(analysis_folder):
+        os.makedirs(analysis_folder)
 
     # #####################################################################################################
-    # End of LASCO download an analysis
+    # End of LASCO download and analysis
     # #####################################################################################################
     computation_end = time.time()
     elapsed_mins = round((computation_end - computation_start) / 60, 1)

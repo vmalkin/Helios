@@ -5,7 +5,6 @@ import time
 import os
 
 enhanced_folder = global_config.folder_source_images + os.sep + "enhanced_lasco"
-storage_folder = global_config.folder_source_images + os.sep + "store_lasco_512"
 analysis_folder = global_config.folder_source_images + os.sep + "analysis_lasco"
 processing_start_date = int(time.time() - (86400 * 1))
 
