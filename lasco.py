@@ -114,6 +114,7 @@ if __name__ == "__main__":
     ymd_old = ymd_now - 3
     year = standard_stuff.posix2utc(tm, "%Y")
 
+    # Download the latest images for the last 3 days.
     for epoch in range(ymd_now, ymd_old, - 1):
         # LASCO coronagraph
         baseURL = "https://soho.nascom.nasa.gov/data/REPROCESSING/Completed/" + year + "/c3/" + str(epoch) + "/"
@@ -124,14 +125,13 @@ if __name__ == "__main__":
     # #####################################################################################################
     enhanced_folder = global_config.folder_source_images + os.sep + "enhanced_lasco"
     analysis_folder = global_config.folder_source_images + os.sep + "analysis_lasco"
-
     if not os.path.exists(enhanced_folder):
         os.makedirs(enhanced_folder)
     if not os.path.exists(analysis_folder):
         os.makedirs(analysis_folder)
 
     # BEGIN enhancesment of LASCO images, removing particle strikes and improve contrast.
-    # Generate file list of current lasco images for the past 24 hours or other time.
+    # So, generate file list of current lasco images for the past 24 hours or other time.
     file_list = os.listdir(storage_folder)
     file_list.sort()
     # The array item in list of current files has the format [posixtimestamp, filename]
