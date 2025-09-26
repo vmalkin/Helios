@@ -103,12 +103,12 @@ if __name__ == "__main__":
     if not os.path.exists(analysis_folder):
         os.makedirs(analysis_folder)
     # BEGIN enhancesment of LASCO images, removing particle strikes and improve contrast.
-    # Generate file list of current lasco images for the past 24 hours or other time interval
+    # Generate file list of current lasco images for the past 24 hours or other time.
 
     # Remove particle hits by taking the rolling median of 3 images, provided there is no time interval between any
-    # image greater than some empirically determined value. CReate a new image from this.
+    # image greater than some empirically determined value. Create a new image from this.
 
-    # If everything works out, apply image contrast/emhancement
+    # If everything works out, apply image contrast/enhancement
 
     # At this point we can apply the local analyser to automatically calculate if a possible CME has been detected
     # This creates a new set of images that have been convoluted and saved in the analysis folder.
