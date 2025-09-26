@@ -105,7 +105,7 @@ if __name__ == "__main__":
     processing_start_date = int(computation_start - (86400 * 1))
 
     # If necessary, create the storage folder for lasco images. Otherwise, download latest images.
-    storage_folder = global_config.folder_source_images + os.sep + "store_lasco_512"
+    storage_folder = os.path.join(global_config.folder_source_images,"store_lasco_512")
     if not os.path.exists(storage_folder):
         os.makedirs(storage_folder)
 
@@ -151,7 +151,6 @@ if __name__ == "__main__":
     time_threshold = 60 * 120
     # The cleaned image array stores [posixtimestamp, processed_image_binary]
     cleaned_picture_array = []
-    filepath = storage_folder +  os.sep
 
     if len(current_files) > 3:
         for i in range(1, len(current_files) - 1):
@@ -162,10 +161,13 @@ if __name__ == "__main__":
 
             if max(tmp_times) - min(tmp_times) <= time_threshold:
                 # load images and create new image based on median values
-                img_1 = cv2.imread(filepath + tmp_images[0], 0)
-                img_2 = cv2.imread(filepath + tmp_images[1], 0)
-                img_3 = cv2.imread(filepath + tmp_images[2], 0)
-                t = [img_1, img_2, img_3]
+                file = os.path.join(storage_folder, str(tmp_images[0]))
+                img_0 = cv2.imread(file, 0)
+                file = os.path.join(storage_folder, str(tmp_images[1]))
+                img_1 = cv2.imread(file, 0)
+                file = os.path.join(storage_folder, str(tmp_images[2]))
+                img_2 = cv2.imread(file, 0)
+                t = [img_0, img_1, img_2]
                 median_filtered_image = np.median(t, axis=0)
                 psx_timestamp = tmp_times[1]
                 dp = [psx_timestamp, median_filtered_image]
