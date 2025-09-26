@@ -131,7 +131,7 @@ if __name__ == "__main__":
     if len(current_files) > 3:
         for i in range(1, len(current_files) - 1):
             temp_images = [current_files[i - 1], current_files[i], current_files[i + 1]]
-            a = np.array(temp_images)
+            a = np.array(temp_images, dtype=object)
             tmp_times = a[:, 0]
             tmp_images = a[:, 1]
             if max(tmp_times) - min(tmp_times) <= time_threshold:
@@ -146,12 +146,29 @@ if __name__ == "__main__":
                 cleaned_picture_array.append(dp)
 
     # If everything works out, apply image contrast/enhancement to median image array
+    processed_images = []
+    for item in cleaned_picture_array:
+        psx_timestamp = item[0]
+        median_image = item[1]
+
+        # alpha value [1.0-3.0] CONTRAST
+        # beta value [0-100] BRIGHTNESS
+        alpha = 1.5
+        beta = 2
+        picture = cv2.convertScaleAbs(median_image, alpha=alpha, beta=beta)
+        clahe = cv2.createCLAHE(clipLimit=2, tileGridSize=(10, 10))
+        picture = clahe.apply(picture)
+        picture = cv2.applyColorMap(picture, cv2.COLORMAP_OCEAN)
+        dp = [psx_timestamp, picture]
+        processed_images.append(dp)
 
     # This array can be passed to a local analyser to automatically calculate if a possible CME has been detected
     # This creates a new set of images that have been convoluted and saved in the analysis folder.
 
     # Add Dunedin Aurora stamp to images in array
     # Write out images to files. FINISHED!
+    for item in processed_images:
+        pass
 
     # #####################################################################################################
     # End of LASCO download and analysis
