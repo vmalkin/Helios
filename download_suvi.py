@@ -96,21 +96,21 @@ def download_suvi(lasco_url, storage_folder):
 if __name__ == '__main__':
     # Check for save folders
     for sat in goes_dict:
-        if os.path.exists(goes_dict[sat]['false_colour']) is False:
+        if not os.path.exists(goes_dict[sat]['false_colour']):
             os.makedirs(goes_dict[sat]['false_colour'])
 
-        if os.path.exists(goes_dict[sat]['false_diffs']) is False:
+        if not os.path.exists(goes_dict[sat]['false_diffs']):
             os.makedirs(goes_dict[sat]['false_diffs'])
 
     for sat in goes_dict:
         for key in goes_dict[sat]['wavelengths']:
-            if os.path.exists(goes_dict[sat]['wavelengths'][key]['store']) is False:
+            if not os.path.exists(goes_dict[sat]['wavelengths'][key]['store']):
                 os.makedirs(goes_dict[sat]['wavelengths'][key]['store'])
 
-            if os.path.exists(goes_dict[sat]['wavelengths'][key]['diffs']) is False:
+            if not os.path.exists(goes_dict[sat]['wavelengths'][key]['diffs']):
                 os.makedirs(goes_dict[sat]['wavelengths'][key]['diffs'])
 
-    if os.path.exists(global_config.folder_output_to_publish) is False:
+    if not os.path.exists(global_config.folder_output_to_publish):
         os.makedirs(global_config.folder_output_to_publish)
 
     # get the latest SUVI images
